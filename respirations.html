@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A4P Mental — Respirations Guidées</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,400&family=DM+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0F2244;
+  --navy2: #0a1628;
+  --blue: #1B3A6B;
+  --blue2: #2E5BA8;
+  --gold: #C9A84C;
+  --gold2: #E8C56A;
+  --white: #FFFFFF;
+}
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background: var(–navy);
+color: var(–white);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* ══ MENU ══ */
+.menu {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+background: rgba(10, 22, 40, 0.95);
+backdrop-filter: blur(20px);
+border-bottom: 1px solid rgba(201,168,76,0.2);
+padding: 12px 20px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+flex-wrap: wrap;
+}
+
+.menu-logo {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.menu-logo-text {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 16px;
+font-weight: 700;
+color: var(–white);
+}
+
+.menu-logo-text span { color: var(–gold); }
+
+.menu-tabs {
+display: flex;
+gap: 6px;
+flex-wrap: wrap;
+}
+
+.menu-tab {
+padding: 8px 16px;
+border-radius: 30px;
+border: 1px solid rgba(255,255,255,0.12);
+background: transparent;
+color: rgba(255,255,255,0.5);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 12px;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.3s;
+letter-spacing: 0.05em;
+}
+
+.menu-tab:hover { color: white; border-color: rgba(255,255,255,0.3); }
+.menu-tab.active { background: var(–gold); color: var(–navy); border-color: var(–gold); }
+
+/* ══ PAGES ══ */
+.page { display: none; min-height: 100vh; padding-top: 70px; }
+.page.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+/* ══ FOND ANIMÉ COMMUN ══ */
+.bg-glow {
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: 0;
+overflow: hidden;
+}
+
+.glow-orb {
+position: absolute;
+border-radius: 50%;
+filter: blur(100px);
+opacity: 0.08;
+animation: orbFloat 8s ease-in-out infinite;
+}
+
+@keyframes orbFloat {
+0%, 100% { transform: translate(0, 0) scale(1); }
+33% { transform: translate(30px, -20px) scale(1.1); }
+66% { transform: translate(-20px, 30px) scale(0.9); }
+}
+
+/* ══════════════════════════════════════
+COHÉRENCE CARDIAQUE — 5-5
+══════════════════════════════════════ */
+#page-coherence {
+background: radial-gradient(ellipse at 30% 40%, rgba(27,58,107,0.3) 0%, transparent 60%),
+radial-gradient(ellipse at 70% 60%, rgba(201,168,76,0.08) 0%, transparent 60%),
+var(–navy);
+}
+
+.breath-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 32px;
+z-index: 10;
+padding: 20px;
+}
+
+.breath-header {
+text-align: center;
+}
+
+.breath-name {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(28px, 5vw, 48px);
+font-weight: 600;
+color: var(–white);
+margin-bottom: 6px;
+}
+
+.breath-name span { color: var(–gold); }
+
+.breath-tagline {
+font-size: 13px;
+color: rgba(255,255,255,0.4);
+letter-spacing: 0.15em;
+text-transform: uppercase;
+}
+
+/* CERCLE COHÉRENCE */
+.coherence-circle-wrap {
+position: relative;
+width: clamp(240px, 40vw, 320px);
+height: clamp(240px, 40vw, 320px);
+}
+
+.coherence-rings {
+position: absolute;
+inset: 0;
+}
+
+.ring {
+position: absolute;
+border-radius: 50%;
+border: 1px solid rgba(201,168,76,0.1);
+animation: ringPulse 5s ease-in-out infinite;
+}
+
+.ring:nth-child(1) { inset: -20px; animation-delay: 0s; }
+.ring:nth-child(2) { inset: -10px; animation-delay: 0.5s; }
+.ring:nth-child(3) { inset: 0; animation-delay: 1s; }
+
+@keyframes ringPulse {
+0%, 100% { opacity: 0.1; transform: scale(1); }
+50% { opacity: 0.3; transform: scale(1.02); }
+}
+
+.coherence-svg {
+position: absolute;
+inset: 0;
+transform: rotate(-90deg);
+}
+
+.coherence-track {
+fill: none;
+stroke: rgba(255,255,255,0.05);
+stroke-width: 3;
+}
+
+.coherence-progress {
+fill: none;
+stroke: var(–gold);
+stroke-width: 3;
+stroke-linecap: round;
+filter: drop-shadow(0 0 8px rgba(201,168,76,0.8));
+}
+
+.coherence-inner {
+position: absolute;
+inset: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+
+.coherence-pulse-circle {
+position: absolute;
+inset: 30px;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+}
+
+.c-phase-label {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(16px, 3vw, 22px);
+font-weight: 600;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 4px;
+}
+
+.c-count {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(56px, 10vw, 80px);
+font-weight: 300;
+line-height: 1;
+color: var(–white);
+}
+
+.c-unit {
+font-size: 11px;
+color: rgba(255,255,255,0.3);
+letter-spacing: 0.2em;
+text-transform: uppercase;
+margin-top: 4px;
+}
+
+/* WAVE CARDIAQUE */
+.wave-container {
+width: clamp(280px, 80vw, 500px);
+height: 60px;
+position: relative;
+overflow: hidden;
+}
+
+.wave-svg { width: 100%; height: 100%; }
+
+.wave-path {
+fill: none;
+stroke: var(–gold);
+stroke-width: 2;
+opacity: 0.6;
+filter: drop-shadow(0 0 4px rgba(201,168,76,0.5));
+}
+
+.coherence-info {
+display: flex;
+gap: 24px;
+align-items: center;
+}
+
+.info-pill {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+background: rgba(255,255,255,0.04);
+border: 1px solid rgba(255,255,255,0.08);
+border-radius: 14px;
+padding: 12px 20px;
+}
+
+.info-pill-num {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: 28px;
+font-weight: 600;
+color: var(–gold);
+line-height: 1;
+}
+
+.info-pill-label {
+font-size: 10px;
+color: rgba(255,255,255,0.4);
+letter-spacing: 0.12em;
+text-transform: uppercase;
+}
+
+.info-pill-sep {
+font-size: 20px;
+color: rgba(255,255,255,0.2);
+}
+
+/* BOUTON START */
+.breath-btn {
+padding: 14px 40px;
+border-radius: 50px;
+border: none;
+background: linear-gradient(135deg, var(–gold), var(–gold2));
+color: var(–navy);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 14px;
+font-weight: 800;
+cursor: pointer;
+letter-spacing: 0.05em;
+transition: all 0.3s;
+box-shadow: 0 8px 30px rgba(201,168,76,0.3);
+}
+
+.breath-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(201,168,76,0.5); }
+.breath-btn.running { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.12); box-shadow: none; }
+
+/* SESSION COUNT */
+.session-count {
+font-size: 12px;
+color: rgba(255,255,255,0.3);
+letter-spacing: 0.1em;
+}
+
+.session-dots {
+display: flex;
+gap: 6px;
+margin-top: 6px;
+justify-content: center;
+}
+
+.session-dot {
+width: 8px; height: 8px;
+border-radius: 50%;
+background: rgba(255,255,255,0.1);
+transition: all 0.4s;
+}
+
+.session-dot.done { background: var(–gold); }
+
+/* ══════════════════════════════════════
+RESPIRATION CARRÉE — 4-4-4-4
+══════════════════════════════════════ */
+#page-carree {
+background: radial-gradient(ellipse at 20% 30%, rgba(46,91,168,0.2) 0%, transparent 60%),
+radial-gradient(ellipse at 80% 70%, rgba(201,168,76,0.06) 0%, transparent 60%),
+var(–navy2);
+}
+
+.square-wrap {
+position: relative;
+width: clamp(220px, 38vw, 300px);
+height: clamp(220px, 38vw, 300px);
+}
+
+.square-bg {
+position: absolute;
+inset: 0;
+border: 1px solid rgba(201,168,76,0.1);
+border-radius: 24px;
+background: rgba(255,255,255,0.02);
+}
+
+.square-svg {
+position: absolute;
+inset: 0;
+width: 100%;
+height: 100%;
+overflow: visible;
+}
+
+.square-track {
+fill: none;
+stroke: rgba(255,255,255,0.04);
+stroke-width: 3;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+
+.square-progress {
+fill: none;
+stroke: var(–gold);
+stroke-width: 4;
+stroke-linecap: round;
+stroke-linejoin: round;
+filter: drop-shadow(0 0 8px rgba(201,168,76,0.9));
+}
+
+.square-glow-dot {
+fill: var(–gold2);
+filter: drop-shadow(0 0 10px rgba(201,168,76,1));
+}
+
+.square-corner {
+position: absolute;
+width: 10px;
+height: 10px;
+border-radius: 50%;
+background: rgba(201,168,76,0.15);
+border: 1px solid rgba(201,168,76,0.3);
+}
+
+.square-corner.tl { top: -5px; left: -5px; }
+.square-corner.tr { top: -5px; right: -5px; }
+.square-corner.br { bottom: -5px; right: -5px; }
+.square-corner.bl { bottom: -5px; left: -5px; }
+
+.square-inner {
+position: absolute;
+inset: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+
+/* PHASE LABELS AUTOUR DU CARRÉ */
+.square-labels {
+position: absolute;
+inset: -50px;
+}
+
+.sq-label {
+position: absolute;
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: rgba(255,255,255,0.25);
+transition: color 0.3s, text-shadow 0.3s;
+}
+
+.sq-label.active-label {
+color: var(–gold);
+text-shadow: 0 0 12px rgba(201,168,76,0.6);
+}
+
+.sq-label.top { top: 10px; left: 50%; transform: translateX(-50%); }
+.sq-label.right { right: 0; top: 50%; transform: translateY(-50%); }
+.sq-label.bottom { bottom: 10px; left: 50%; transform: translateX(-50%); }
+.sq-label.left { left: 0; top: 50%; transform: translateY(-50%); }
+
+/* ══════════════════════════════════════
+VARIANTE CARRÉE — 4-6
+══════════════════════════════════════ */
+#page-4-6 {
+background: radial-gradient(ellipse at 60% 30%, rgba(27,58,107,0.25) 0%, transparent 60%),
+radial-gradient(ellipse at 30% 70%, rgba(26,106,58,0.1) 0%, transparent 60%),
+var(–navy);
+}
+
+/* ELLIPSE ANIMÉE */
+.ellipse-wrap {
+position: relative;
+width: clamp(260px, 45vw, 340px);
+height: clamp(180px, 30vw, 240px);
+}
+
+.ellipse-svg {
+width: 100%;
+height: 100%;
+overflow: visible;
+}
+
+.ellipse-track {
+fill: none;
+stroke: rgba(255,255,255,0.05);
+stroke-width: 3;
+}
+
+.ellipse-progress {
+fill: none;
+stroke: url(#ellipseGrad);
+stroke-width: 4;
+stroke-linecap: round;
+filter: drop-shadow(0 0 8px rgba(201,168,76,0.7));
+}
+
+.ellipse-dot {
+filter: drop-shadow(0 0 12px rgba(201,168,76,1));
+}
+
+.ellipse-center {
+position: absolute;
+inset: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+}
+
+/* ══════════════════════════════════════
+TRIANGULAIRE — 4-4-4
+══════════════════════════════════════ */
+#page-triangle {
+background: radial-gradient(ellipse at 50% 20%, rgba(46,91,168,0.2) 0%, transparent 60%),
+radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.08) 0%, transparent 60%),
+var(–navy2);
+}
+
+.triangle-wrap {
+position: relative;
+width: clamp(240px, 40vw, 320px);
+height: clamp(220px, 36vw, 290px);
+}
+
+.triangle-svg {
+width: 100%;
+height: 100%;
+overflow: visible;
+}
+
+.tri-track {
+fill: none;
+stroke: rgba(255,255,255,0.04);
+stroke-width: 3;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+
+.tri-progress {
+fill: none;
+stroke: var(–gold);
+stroke-width: 4;
+stroke-linecap: round;
+stroke-linejoin: round;
+filter: drop-shadow(0 0 10px rgba(201,168,76,0.9));
+}
+
+.tri-dot {
+fill: var(–gold2);
+filter: drop-shadow(0 0 12px rgba(201,168,76,1));
+}
+
+/* LABELS TRIANGLE */
+.tri-labels {
+position: absolute;
+inset: 0;
+}
+
+.tri-label {
+position: absolute;
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: rgba(255,255,255,0.25);
+transition: all 0.3s;
+text-align: center;
+}
+
+.tri-label.active-label { color: var(–gold); text-shadow: 0 0 12px rgba(201,168,76,0.6); }
+
+/* ══ COMMUN ══ */
+.phase-display {
+text-align: center;
+}
+
+.phase-name {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(18px, 3vw, 26px);
+font-weight: 600;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+margin-bottom: 2px;
+}
+
+.phase-counter {
+font-family: ‘Cormorant Garamond’, serif;
+font-size: clamp(64px, 12vw, 96px);
+font-weight: 300;
+line-height: 1;
+}
+
+.phase-unit {
+font-size: 11px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: rgba(255,255,255,0.3);
+}
+
+.progress-bar-wrap {
+width: clamp(200px, 60vw, 400px);
+height: 3px;
+background: rgba(255,255,255,0.06);
+border-radius: 3px;
+overflow: hidden;
+}
+
+.progress-bar-fill {
+height: 100%;
+background: linear-gradient(to right, var(–gold), var(–gold2));
+border-radius: 3px;
+width: 0%;
+transition: width 0.1s linear;
+box-shadow: 0 0 8px rgba(201,168,76,0.6);
+}
+
+.benefit-tag {
+display: inline-block;
+padding: 6px 16px;
+border-radius: 20px;
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+background: rgba(201,168,76,0.1);
+border: 1px solid rgba(201,168,76,0.2);
+color: var(–gold);
+}
+
+.logo-watermark {
+position: fixed;
+bottom: 20px;
+right: 20px;
+opacity: 0.18;
+z-index: 5;
+}
+</style>
+
+</head>
+<body>
+
+<!-- FOND LUMINEUX -->
+
+<div class="bg-glow">
+  <div class="glow-orb" style="width:600px;height:600px;top:-100px;left:-100px;background:var(--blue);animation-duration:10s;"></div>
+  <div class="glow-orb" style="width:400px;height:400px;bottom:-50px;right:-50px;background:var(--gold);animation-duration:14s;animation-delay:3s;"></div>
+</div>
+
+<!-- MENU -->
+
+<nav class="menu">
+  <div class="menu-logo">
+    <img src="IMG_1795.png" style="height:36px;width:auto;filter:brightness(0) invert(1);opacity:0.9;" alt="A4P" onerror="this.style.display='none'">
+    <div class="menu-logo-text">A4P · <span>Respirations</span></div>
+  </div>
+  <div class="menu-tabs">
+    <button class="menu-tab active" onclick="showPage('coherence')">❤️ Cohérence cardiaque</button>
+    <button class="menu-tab" onclick="showPage('carree')">⬛ Carrée 4-4-4-4</button>
+    <button class="menu-tab" onclick="showPage('4-6')">🔵 Apaisante 4-6</button>
+    <button class="menu-tab" onclick="showPage('triangle')">🔺 Triangulaire 4-4-4</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE 1 — COHÉRENCE CARDIAQUE 5-5
+══════════════════════════════════════ -->
+
+<div class="page active" id="page-coherence">
+  <div class="breath-container">
+    <div class="breath-header">
+      <div class="breath-name">Cohérence <span>Cardiaque</span></div>
+      <div class="breath-tagline">5 secondes · 5 secondes · 6 cycles par minute</div>
+    </div>
+
+```
+<div class="coherence-circle-wrap" id="coherence-wrap">
+  <div class="coherence-rings">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <svg class="coherence-svg" viewBox="0 0 320 320">
+    <defs>
+      <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#C9A84C"/>
+        <stop offset="100%" style="stop-color:#E8C56A"/>
+      </linearGradient>
+    </defs>
+    <circle cx="160" cy="160" r="140" class="coherence-track"/>
+    <circle cx="160" cy="160" r="140" class="coherence-progress" id="coherence-ring"
+      stroke="url(#goldGrad)"
+      stroke-dasharray="879.6"
+      stroke-dashoffset="879.6"/>
+  </svg>
+  <div class="coherence-pulse-circle" id="pulse-circle"></div>
+  <div class="coherence-inner">
+    <div class="c-phase-label" id="c-phase">Inspire</div>
+    <div class="c-count" id="c-count">5</div>
+    <div class="c-unit">secondes</div>
+  </div>
+</div>
+
+<div class="wave-container">
+  <svg class="wave-svg" viewBox="0 0 500 60" preserveAspectRatio="none">
+    <path class="wave-path" id="wave-path" d=""/>
+  </svg>
+</div>
+
+<div class="coherence-info">
+  <div class="info-pill">
+    <div class="info-pill-num">5</div>
+    <div class="info-pill-label">Inspire</div>
+  </div>
+  <div class="info-pill-sep">·</div>
+  <div class="info-pill">
+    <div class="info-pill-num">5</div>
+    <div class="info-pill-label">Expire</div>
+  </div>
+  <div class="info-pill-sep">·</div>
+  <div class="info-pill">
+    <div class="info-pill-num">5 min</div>
+    <div class="info-pill-label">Session</div>
+  </div>
+</div>
+
+<button class="breath-btn" id="c-btn" onclick="toggleCoherence()">▶ Démarrer</button>
+
+<div class="session-count">
+  <div style="text-align:center;color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:0.1em;margin-bottom:6px;">CYCLES COMPLÉTÉS</div>
+  <div class="session-dots" id="c-dots">
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+    <div class="session-dot"></div><div class="session-dot"></div><div class="session-dot"></div>
+  </div>
+  <div style="text-align:center;margin-top:6px;font-size:11px;color:rgba(255,255,255,0.2);">30 cycles = 5 minutes</div>
+</div>
+
+<div class="benefit-tag">Active le système nerveux parasympathique · Réduit le cortisol</div>
+```
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 2 — CARRÉE 4-4-4-4
+══════════════════════════════════════ -->
+
+<div class="page" id="page-carree">
+  <div class="breath-container">
+    <div class="breath-header">
+      <div class="breath-name">Respiration <span>Carrée</span></div>
+      <div class="breath-tagline">4 · 4 · 4 · 4 — Équilibre total</div>
+    </div>
+
+```
+<div class="square-wrap">
+  <div class="square-bg"></div>
+  <svg class="square-svg" viewBox="-20 -20 340 340" id="sq-svg">
+    <rect x="15" y="15" width="270" height="270" rx="20"
+      class="square-track"/>
+    <rect x="15" y="15" width="270" height="270" rx="20"
+      class="square-progress" id="sq-progress"
+      stroke-dasharray="1100"
+      stroke-dashoffset="1100"/>
+    <circle r="8" class="square-glow-dot" id="sq-dot" cx="15" cy="15"/>
+  </svg>
+  <div class="square-corner tl"></div>
+  <div class="square-corner tr"></div>
+  <div class="square-corner br"></div>
+  <div class="square-corner bl"></div>
+  <div class="square-labels">
+    <div class="sq-label top" id="sq-l-inspire">Inspire</div>
+    <div class="sq-label right" id="sq-l-hold1">Retiens</div>
+    <div class="sq-label bottom" id="sq-l-expire">Expire</div>
+    <div class="sq-label left" id="sq-l-hold2">Retiens</div>
+  </div>
+  <div class="square-inner">
+    <div class="phase-name" id="sq-phase" style="color:var(--gold)">Inspire</div>
+    <div class="phase-counter" id="sq-count">4</div>
+    <div class="phase-unit">sec</div>
+  </div>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="sq-bar"></div>
+</div>
+
+<button class="breath-btn" id="sq-btn" onclick="toggleSquare()">▶ Démarrer</button>
+<div class="benefit-tag">Concentration · Clarté mentale · Calme avant compétition</div>
+```
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 3 — APAISANTE 4-6
+══════════════════════════════════════ -->
+
+<div class="page" id="page-4-6">
+  <div class="breath-container">
+    <div class="breath-header">
+      <div class="breath-name">Bascule <span>Dopamine</span></div>
+      <div class="breath-tagline">4 inspire · 6 expire — Coupe le cortisol en 90 secondes</div>
+    </div>
+
+```
+<div class="ellipse-wrap">
+  <svg class="ellipse-svg" viewBox="-10 -10 360 220" id="el-svg">
+    <defs>
+      <linearGradient id="ellipseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#C9A84C;stop-opacity:1"/>
+        <stop offset="50%" style="stop-color:#E8C56A;stop-opacity:1"/>
+        <stop offset="100%" style="stop-color:#C9A84C;stop-opacity:1"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="170" cy="100" rx="160" ry="90"
+      class="ellipse-track"/>
+    <ellipse cx="170" cy="100" rx="160" ry="90"
+      class="ellipse-progress" id="el-progress"
+      stroke-dasharray="791"
+      stroke-dashoffset="791"/>
+    <circle r="9" class="ellipse-dot" id="el-dot" cx="170" cy="10"
+      fill="var(--gold2)" filter="drop-shadow(0 0 12px rgba(201,168,76,1))"/>
+  </svg>
+  <div class="ellipse-center">
+    <div class="phase-name" id="el-phase" style="color:var(--gold)">Inspire</div>
+    <div class="phase-counter" id="el-count">4</div>
+    <div class="phase-unit">secondes</div>
+  </div>
+</div>
+
+<div style="display:flex;gap:16px;align-items:center;">
+  <div class="info-pill" style="border-color:rgba(201,168,76,0.3);">
+    <div class="info-pill-num">4</div>
+    <div class="info-pill-label">Inspire</div>
+  </div>
+  <div class="info-pill-sep" style="color:rgba(255,255,255,0.2);">→</div>
+  <div class="info-pill" style="border-color:rgba(46,91,168,0.3);">
+    <div class="info-pill-num" style="color:#7EB6FF;">6</div>
+    <div class="info-pill-label">Expire</div>
+  </div>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="el-bar"></div>
+</div>
+
+<button class="breath-btn" id="el-btn" onclick="toggleEllipse()">▶ Démarrer</button>
+<div class="benefit-tag">Parasympathique · Anti-cortisol · Bascule en 90 secondes</div>
+```
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 4 — TRIANGULAIRE 4-4-4
+══════════════════════════════════════ -->
+
+<div class="page" id="page-triangle">
+  <div class="breath-container">
+    <div class="breath-header">
+      <div class="breath-name">Respiration <span>Triangulaire</span></div>
+      <div class="breath-tagline">4 inspire · 4 retiens · 4 expire — Focus immédiat</div>
+    </div>
+
+```
+<div class="triangle-wrap">
+  <svg class="triangle-svg" viewBox="-30 -30 360 320" id="tri-svg">
+    <polygon points="150,20 290,265 10,265"
+      class="tri-track"/>
+    <polygon points="150,20 290,265 10,265"
+      class="tri-progress" id="tri-progress"
+      stroke-dasharray="760"
+      stroke-dashoffset="760"/>
+    <circle r="10" class="tri-dot" id="tri-dot" cx="150" cy="20"/>
+  </svg>
+  <div class="tri-labels">
+    <div class="tri-label" id="tri-l-inspire" style="top:0;left:50%;transform:translateX(-50%)">Inspire</div>
+    <div class="tri-label" id="tri-l-hold" style="bottom:0;right:5%">Retiens</div>
+    <div class="tri-label" id="tri-l-expire" style="bottom:0;left:5%">Expire</div>
+  </div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;padding-top:40px;">
+    <div class="phase-name" id="tri-phase" style="color:var(--gold)">Inspire</div>
+    <div class="phase-counter" id="tri-count">4</div>
+    <div class="phase-unit">secondes</div>
+  </div>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="tri-bar"></div>
+</div>
+
+<button class="breath-btn" id="tri-btn" onclick="toggleTriangle()">▶ Démarrer</button>
+<div class="benefit-tag">Activation rapide · Recentrage · 2 minutes suffisent</div>
+```
+
+  </div>
+</div>
+
+<!-- LOGO WATERMARK -->
+
+<div class="logo-watermark">
+  <img src="IMG_1795.png" style="height:40px;width:auto;filter:brightness(0) invert(1);" alt="A4P" onerror="this.style.display='none'">
+</div>
+
+<script>
+// ══ NAVIGATION ══
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.menu-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+  stopAll();
+}
+
+function stopAll() {
+  stopCoherence(); stopSquare(); stopEllipse(); stopTriangle();
+}
+
+// ══════════════════════════════
+// COHÉRENCE CARDIAQUE 5-5
+// ══════════════════════════════
+let cTimer = null, cRunning = false;
+let cPhase = 'inspire', cCount = 5, cCycles = 0;
+const cCircumference = 879.6;
+let wavePoints = [];
+
+function toggleCoherence() {
+  if (cRunning) stopCoherence();
+  else startCoherence();
+}
+
+function startCoherence() {
+  cRunning = true;
+  cPhase = 'inspire'; cCount = 5; cCycles = 0;
+  document.getElementById('c-btn').textContent = '⏹ Arrêter';
+  document.getElementById('c-btn').classList.add('running');
+  updateCoherenceUI();
+  cTimer = setInterval(tickCoherence, 1000);
+}
+
+function stopCoherence() {
+  cRunning = false;
+  clearInterval(cTimer);
+  document.getElementById('c-btn').textContent = '▶ Démarrer';
+  document.getElementById('c-btn').classList.remove('running');
+  document.getElementById('c-phase').textContent = 'Inspire';
+  document.getElementById('c-count').textContent = '5';
+  document.getElementById('coherence-ring').style.strokeDashoffset = cCircumference;
+  document.getElementById('coherence-ring').style.transition = 'none';
+}
+
+function tickCoherence() {
+  const totalPhase = cPhase === 'inspire' ? 5 : 5;
+  const elapsed = totalPhase - cCount;
+  const pct = elapsed / totalPhase;
+  const fullCyclePct = cPhase === 'inspire' ? pct * 0.5 : 0.5 + pct * 0.5;
+  const offset = cCircumference * (1 - fullCyclePct);
+  const ring = document.getElementById('coherence-ring');
+  ring.style.transition = 'stroke-dashoffset 0.9s linear';
+  ring.style.strokeDashoffset = offset;
+
+  // Wave
+  wavePoints.push(cPhase === 'inspire' ? 1 - pct : pct);
+  if (wavePoints.length > 100) wavePoints.shift();
+  drawWave();
+
+  cCount--;
+  if (cCount < 0) {
+    if (cPhase === 'inspire') {
+      cPhase = 'expire'; cCount = 4;
+    } else {
+      cPhase = 'inspire'; cCount = 4;
+      cCycles++;
+      updateCycleDots();
+      ring.style.transition = 'none';
+      ring.style.strokeDashoffset = cCircumference;
+      if (cCycles >= 30) { stopCoherence(); return; }
+    }
+  }
+  updateCoherenceUI();
+}
+
+function updateCoherenceUI() {
+  const phaseEl = document.getElementById('c-phase');
+  const countEl = document.getElementById('c-count');
+  phaseEl.textContent = cPhase === 'inspire' ? 'Inspire' : 'Expire';
+  phaseEl.style.color = cPhase === 'inspire' ? 'var(--gold)' : '#7EB6FF';
+  countEl.textContent = Math.max(0, cCount);
+  countEl.style.color = cPhase === 'inspire' ? 'white' : '#CADCFC';
+}
+
+function updateCycleDots() {
+  const dots = document.querySelectorAll('#c-dots .session-dot');
+  for (let i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle('done', i < cCycles);
+  }
+}
+
+function drawWave() {
+  const pts = wavePoints;
+  if (pts.length < 2) return;
+  const w = 500, h = 60;
+  let d = `M 0 ${h/2}`;
+  pts.forEach((v, i) => {
+    const x = (i / (pts.length - 1)) * w;
+    const y = h/2 - (v - 0.5) * 40;
+    d += ` L ${x} ${y}`;
+  });
+  document.getElementById('wave-path').setAttribute('d', d);
+}
+
+// ══════════════════════════════
+// CARRÉE 4-4-4-4
+// ══════════════════════════════
+let sqTimer = null, sqRunning = false;
+let sqPhaseIdx = 0, sqCount = 4;
+const sqPhases = [
+  { name: 'Inspire', label: 'sq-l-inspire', dur: 4, color: 'var(--gold)' },
+  { name: 'Retiens', label: 'sq-l-hold1', dur: 4, color: 'white' },
+  { name: 'Expire', label: 'sq-l-expire', dur: 4, color: '#7EB6FF' },
+  { name: 'Retiens', label: 'sq-l-hold2', dur: 4, color: 'rgba(255,255,255,0.5)' }
+];
+const sqPerimeter = 1100;
+let sqTotalElapsed = 0;
+const sqTotalCycle = 16;
+
+function toggleSquare() {
+  if (sqRunning) stopSquare(); else startSquare();
+}
+
+function startSquare() {
+  sqRunning = true; sqPhaseIdx = 0; sqCount = 4; sqTotalElapsed = 0;
+  document.getElementById('sq-btn').textContent = '⏹ Arrêter';
+  document.getElementById('sq-btn').classList.add('running');
+  updateSquareUI();
+  sqTimer = setInterval(tickSquare, 1000);
+}
+
+function stopSquare() {
+  sqRunning = false; clearInterval(sqTimer);
+  document.getElementById('sq-btn').textContent = '▶ Démarrer';
+  document.getElementById('sq-btn').classList.remove('running');
+  document.getElementById('sq-progress').style.strokeDashoffset = sqPerimeter;
+  document.getElementById('sq-bar').style.width = '0%';
+  document.getElementById('sq-phase').textContent = 'Inspire';
+  document.getElementById('sq-count').textContent = '4';
+  document.querySelectorAll('.sq-label').forEach(l => l.classList.remove('active-label'));
+}
+
+function tickSquare() {
+  sqTotalElapsed++;
+  const pct = (sqTotalElapsed % sqTotalCycle) / sqTotalCycle;
+  document.getElementById('sq-progress').style.strokeDashoffset = sqPerimeter * (1 - pct);
+  document.getElementById('sq-bar').style.width = (pct * 100) + '%';
+
+  // Dot position along the square path
+  const p = pct;
+  let dx, dy;
+  if (p < 0.25) { dx = 15 + (p/0.25)*270; dy = 15; }
+  else if (p < 0.5) { dx = 285; dy = 15 + ((p-0.25)/0.25)*270; }
+  else if (p < 0.75) { dx = 285 - ((p-0.5)/0.25)*270; dy = 285; }
+  else { dx = 15; dy = 285 - ((p-0.75)/0.25)*270; }
+  document.getElementById('sq-dot').setAttribute('cx', dx);
+  document.getElementById('sq-dot').setAttribute('cy', dy);
+
+  sqCount--;
+  if (sqCount <= 0) {
+    sqPhaseIdx = (sqPhaseIdx + 1) % 4;
+    sqCount = sqPhases[sqPhaseIdx].dur;
+  }
+  updateSquareUI();
+}
+
+function updateSquareUI() {
+  const ph = sqPhases[sqPhaseIdx];
+  document.getElementById('sq-phase').textContent = ph.name;
+  document.getElementById('sq-phase').style.color = ph.color;
+  document.getElementById('sq-count').textContent = sqCount;
+  document.querySelectorAll('.sq-label').forEach(l => l.classList.remove('active-label'));
+  document.getElementById(ph.label).classList.add('active-label');
+}
+
+// ══════════════════════════════
+// ELLIPSE 4-6
+// ══════════════════════════════
+let elTimer = null, elRunning = false;
+let elPhase = 'inspire', elCount = 4;
+const elCircumference = 791;
+let elTotalElapsed = 0;
+const elCycleDur = 10;
+
+function toggleEllipse() {
+  if (elRunning) stopEllipse(); else startEllipse();
+}
+
+function startEllipse() {
+  elRunning = true; elPhase = 'inspire'; elCount = 4; elTotalElapsed = 0;
+  document.getElementById('el-btn').textContent = '⏹ Arrêter';
+  document.getElementById('el-btn').classList.add('running');
+  updateEllipseUI();
+  elTimer = setInterval(tickEllipse, 1000);
+}
+
+function stopEllipse() {
+  elRunning = false; clearInterval(elTimer);
+  document.getElementById('el-btn').textContent = '▶ Démarrer';
+  document.getElementById('el-btn').classList.remove('running');
+  document.getElementById('el-progress').style.strokeDashoffset = elCircumference;
+  document.getElementById('el-bar').style.width = '0%';
+}
+
+function tickEllipse() {
+  elTotalElapsed++;
+  const pct = (elTotalElapsed % elCycleDur) / elCycleDur;
+  document.getElementById('el-progress').style.strokeDashoffset = elCircumference * (1 - pct);
+  document.getElementById('el-bar').style.width = (pct * 100) + '%';
+
+  // Dot along ellipse
+  const angle = pct * 2 * Math.PI - Math.PI/2;
+  const ex = 170 + 160 * Math.cos(angle);
+  const ey = 100 + 90 * Math.sin(angle);
+  document.getElementById('el-dot').setAttribute('cx', ex);
+  document.getElementById('el-dot').setAttribute('cy', ey);
+
+  elCount--;
+  if (elCount <= 0) {
+    elPhase = elPhase === 'inspire' ? 'expire' : 'inspire';
+    elCount = elPhase === 'inspire' ? 4 : 6;
+  }
+  updateEllipseUI();
+}
+
+function updateEllipseUI() {
+  const phEl = document.getElementById('el-phase');
+  phEl.textContent = elPhase === 'inspire' ? 'Inspire' : 'Expire';
+  phEl.style.color = elPhase === 'inspire' ? 'var(--gold)' : '#7EB6FF';
+  document.getElementById('el-count').textContent = elCount;
+  document.getElementById('el-count').style.color = elPhase === 'inspire' ? 'white' : '#CADCFC';
+}
+
+// ══════════════════════════════
+// TRIANGULAIRE 4-4-4
+// ══════════════════════════════
+let triTimer = null, triRunning = false;
+let triPhaseIdx = 0, triCount = 4;
+const triPhases = [
+  { name: 'Inspire', label: 'tri-l-inspire', dur: 4, color: 'var(--gold)' },
+  { name: 'Retiens', label: 'tri-l-hold', dur: 4, color: 'white' },
+  { name: 'Expire', label: 'tri-l-expire', dur: 4, color: '#7EB6FF' }
+];
+const triPerimeter = 760;
+let triTotalElapsed = 0;
+const triCycleDur = 12;
+
+// Points du triangle
+const triPts = [{x:150,y:20},{x:290,y:265},{x:10,y:265}];
+
+function toggleTriangle() {
+  if (triRunning) stopTriangle(); else startTriangle();
+}
+
+function startTriangle() {
+  triRunning = true; triPhaseIdx = 0; triCount = 4; triTotalElapsed = 0;
+  document.getElementById('tri-btn').textContent = '⏹ Arrêter';
+  document.getElementById('tri-btn').classList.add('running');
+  updateTriUI();
+  triTimer = setInterval(tickTri, 1000);
+}
+
+function stopTriangle() {
+  triRunning = false; clearInterval(triTimer);
+  document.getElementById('tri-btn').textContent = '▶ Démarrer';
+  document.getElementById('tri-btn').classList.remove('running');
+  document.getElementById('tri-progress').style.strokeDashoffset = triPerimeter;
+  document.getElementById('tri-bar').style.width = '0%';
+  document.querySelectorAll('.tri-label').forEach(l => l.classList.remove('active-label'));
+}
+
+function tickTri() {
+  triTotalElapsed++;
+  const pct = (triTotalElapsed % triCycleDur) / triCycleDur;
+  document.getElementById('tri-progress').style.strokeDashoffset = triPerimeter * (1 - pct);
+  document.getElementById('tri-bar').style.width = (pct * 100) + '%';
+
+  // Dot along triangle
+  const segPct = pct * 3;
+  const seg = Math.min(2, Math.floor(segPct));
+  const segLocalPct = segPct - seg;
+  const p1 = triPts[seg];
+  const p2 = triPts[(seg + 1) % 3];
+  const tdx = p1.x + (p2.x - p1.x) * segLocalPct;
+  const tdy = p1.y + (p2.y - p1.y) * segLocalPct;
+  document.getElementById('tri-dot').setAttribute('cx', tdx);
+  document.getElementById('tri-dot').setAttribute('cy', tdy);
+
+  triCount--;
+  if (triCount <= 0) {
+    triPhaseIdx = (triPhaseIdx + 1) % 3;
+    triCount = triPhases[triPhaseIdx].dur;
+  }
+  updateTriUI();
+}
+
+function updateTriUI() {
+  const ph = triPhases[triPhaseIdx];
+  document.getElementById('tri-phase').textContent = ph.name;
+  document.getElementById('tri-phase').style.color = ph.color;
+  document.getElementById('tri-count').textContent = triCount;
+  document.querySelectorAll('.tri-label').forEach(l => l.classList.remove('active-label'));
+  document.getElementById(ph.label).classList.add('active-label');
+}
+</script>
+
+</body>
+</html>
